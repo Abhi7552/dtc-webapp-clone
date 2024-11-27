@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search Route Information</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-gray-100 min-h-screen flex flex-col justify-center items-center">
+    <h1 class="text-3xl font-bold text-gray-700 text-center mb-8">Search Route via Route No</h1>
+    <form id="routeSearchForm" class="bg-white p-6 rounded-lg shadow-lg w-full max-w-xl">
+        <label for="routeNumber" class="block text-lg font-semibold mb-2">Enter Route Number:</label>
+        <input type="text" id="routeNumber" name="routeNumber" class="w-full p-3 border border-gray-300 rounded-lg mb-4"
+            required>
+        <button type="button" onclick="searchRoute()"
+            class="bg-orange-500 text-white font-bold py-2 px-4 rounded-lg cursor-pointer hover:bg-orange-600 transition duration-300">
+            Show Route
+        </button>
+    </form>
+    <div id="routeInfo" class="mt-8 w-full max-w-xl text-center"></div>
+
+    <script>
+        // Sample route data
+        const routes = [
+            {
+                "route_number": "445",
+                "start_location": "DDA Flats KalkaJi",
+                "end_location": "New Delhi Railway Station Gate 2",
+                "stops": ["DDA Flats KalkaJi", "Tara Apartment", "Alaknanda Apartment", "Don Basco School", "gr-kailash part-2", "CR Park", "CR Park Market 1", "C R Park Market 2", "Desh Bandhu Apartments", "Desh Bandhu Gupta College", "South Park Appartments CR Park", "Nehru Place Apartment", "Nehru Place", "Sant Nagar", "Kailash Colony", "Lady Shri Ram College", "Central School (MCKR)", "MCKR Hospital", "Defence Colony", "Pant Nagar", "CGO Complex", "Amir Khusro Park / Oberoi Hotel", "Delhi Public School", "Sunder Nagar Market", "Sunder Nagar", "Zoo", "National Stadium", "ITPO Gate No. 3", "Pragati Maidan Gate No. 5", "Supreme Court Metro Station", "Tilak Bridge", "Mandi House", "Modern School", "Barakhamba Metro Station", "Statesman House", "Shivaji Park", "Vivekanand Marg / Minto Road", "PS Kamla Market", "New Delhi Railway Station Gate 2"],
+                "timings": "Every 15 Minutes"
+            },
+            {
+                "route_number": "761",
+                "start_location": "Manglapuri Terminal",
+                "end_location": "Azadpur Terminal",
+                "stops": ["Manglapuri Terminal", "Manglapuri X-ing", "Health Centre", "Dwarka Crossing", "Dwarka Sec-1", "MahaLakshmi Apartment", "SFS Flat Sec-2 Power House", "", "INS Hostel", "Khalsa College", "Patel Chest", "Shri Ram College", "Maurice Nagar II", "Kamla Nagar/ Roop Nagar", "Shakti Nagar Nangia Park", "Chowki No 2", "Gulabi Bagh", "Shastri Nagar A Block", "Subhadra Colony", "Shastri Nagar Metro Station", "Shastri Nagar E Block", "Shastri Nagar Shiv Mandir", "Inderlok Metro Station", "Inderlok", "Zakhira", "DCM Chemical", "Swatantra Bharat Mills", "Campa Cola", "ESI Dispensary", "Moti Nagar", "Kirti Nagar", "F Block Kirti Nagar", "PS Kirti Nagar", "Fire Station Kirti Nagar", "Mayapuri Depot Crossing", "Government Press", "Metal Forging", "DDA Flats Hari Nagar", "Swarg Ashram", "Beriwala Bagh", "DDU Hospital", "Azadpur Terminal"],
+                "timings": "Every 15 Minutes"
+            },
+            {
+                "route_number": "511",
+                "start_location": "Dhaula Kuan",
+                "end_location": "Badarpur Border (T)",
+                "stops": ["Dhaula Kuan", "Satya Niketan", "Moti Bagh Gurudawara Nanakpura", "Moti Bagh", "South Moti Bagh", "Sangam Cinema", "RK Puram Sec-7", "RK Puram Sec-10", "Mohan Singh Market", "RK Puram Sec-12", "RK Puram Nab", "Munirka Village (T)", "Munirka DDA Flats", "JNU", "Ber Saral", "School Of Physical Science", "FAI", "Sanskrit Vidyapeeth", "Katwaria Sarai", "Qutab Hotel", "NCERT", "Adhchini Village", "Mothers International School", "IIT Gate", "Panchsheel Club / Sarvpriya Vihar", "Sadhna Enclave", "Swami Nagar", "Chirag Dilli", "Masjid Moth", "OS Communications", "Pumposh Enclave", "Nehru Place Crossing/Paras Cinema", "b block kalka ji", "Desh Bandhu Gupta College", "Govindpuri Extn Gali No. 16", "DDA Market Kalkaji", "DDA Flats KalkaJi", "Tara Apartment", "Guru Ravi Das Ashram", "Majeedia Hospital", "Hamdard Nagar / Sangam Vihar", "Air Force Station", "Tugikabad Fort", "Tughlaqabad Village", "Kaya Maya Hospital", "MB Road", "Prem Nagar", "Lal Kuan", "Surajkund Crossing", "Prehlad Pur", "Badarpur M B Road", "Jaltpur Crossing", "Badarpur Border (T)"],
+                "timings": "Every 15 Minutes"
+            },
+            {
+                "route_number": "764",
+                "start_location": "Najafgarh Terminal",
+                "end_location": "Nehru Place Terminal",
+                "stops": ["Najafgarh Terminal", "Jharoda Crossing Jharoda Road", "Najafgarh Nangioi Stand", "Health Centre", "NajafGarh Delhi Gate", "Tuda Mandi", "Power House NajafGarh", "Sai Baba Mandir (Nazafgarh)", "Nangli Sakrawati", "Nangli Sakrawati Crossing", "Arjun Park", "Nangli Dairy", "Kakrola Bridge", "Kakrola More", "Dwarka More Metro Station", "NSIT (Netaji Subhas Institute)", "Dwarka Sec 13/14", "Dwarka Sec 3/4", "DPS Matiyala", "Matiyala Xing", "Raja Puri", "Madhu Vihar", "Dwarka Sec 2-6", "JM International School", "Dwarka Sec 1", "Maharaja Agrasen Hospital Dwarka.", "Health Centre", "Mangla Puri Xing", "Mangla Puri Terminal", "Palam Colony Flyover", "Prehlad Pur", "Indian Oil Station", "Palam Airport/IGI Airport T1", "Palam More", "Raksha S Bhawa", "Shankar Vihar NH-8", "APS Colony/Arjun Path", "Subroto Park (Arjun Path)", "Singhnal Enclave", "Vasant Village", "Swami Malai Mandir", "RK Puram Sec-5", "Vasant Vihar Depot", "Munirka Family Planning", "Munirka DDA Flats", "ISTM", "IIT Hostel", "Jia Saral", "IIT Gate", "Panchsheel Club/Sarvpriya Vihar", "Sadhna Enclave", "Swami Nagar", "OS Communication / Masjid Moth", "OS Communications", "Pumposh Enclave", "Nehru Place Terminal"],
+                "timings": "Every 15 Minutes"
+            },
+            {
+                "route_number": "AIR-08",
+                "start_location": "IGI Airport Terminal 2",
+                "end_location": "NajafGarh Terminal",
+                "stops": ["IGI Airport Terminal 2 ", "Air Traffic Control Office", "Cargo/Express Terminal Gate", "Centaur Hotel", "AMPC", "Aero City Metro Station", "Police Colony Mehram Nagar", "Palam Airport/IGI Airport T111", "IOL", "Indian Oil Station", "Prehlad Pur", "Palam Colony Flyover", "Dwarka Flyover Palam Village", "Dwarka Crossing", "Dwarka Sec 1", "JM International School", "Dwarka Sec 2-6", "Madhu Vihar", "Rajapuri", "Matiyala Xing", "DPS Matiyala", "Dwarka Sec 3-4", "Dwarka Sec 13-3 Xing", "MRV School Sec 13 Dwarka", "Dwarka Sec 13", "NSIT (Netaji Subhas Institute)", "Suraj Vihar", "Kakrola More", "Kakrola Bridge", "Nangli Dairy", "Chhathh Ghat Park", "Arjun Park", "Nangli Sakrawati Crossing", "Nangli Sakrawati", "Sai Baba Mandir", "Power House NajafGarh", "Tuda Mandi", "NajafGarh Delhi Gate", "Police Station Najafgarh", "Najafgarh Dhansa More", "Jharoda Crossing Jharoda Road", "NajafGarh Terminal"],
+                "timings": "Every 15 Minutes"
+            },
+            {
+                "route_number": "RL-75",
+                "start_location": "New Delhi Railway Station Gate 2",
+                "end_location": "Dwarika sec-14 metro stn.",
+                "stops": ["New Delhi Railway Station Gate 2", "Shivaji Park", "Super Bazar", "Regal", "PS Parliament / Jantar Mantar", "Patel Chowk (Ashoka Road)", "Gurudwara Bangla Sahib", "NDPO", "Kendriya Terminal (Pt. Pant Marg)", "Kendriya Terminal (Church Road)", "North Avenue", "Dr. RML Hospital", "Talkatora Stadium Garden", "Sardar Patel Road Xing (11 Murti)", "Palika Kutumb", "Bhartiya Sadhu Samaj", "Railway Colony", "Bapu Dham", "Taj Hotel", "Dhaula Kuan", "RR Lines", "Garrison Engg.", "Brar Square", "Thimiyan Park", "Kirbi Place", "Supply Depot", "Janak Setu", "Nangal Raya Lajwanti Garden", "D Block Janak Puri", "SagarPur Vashisht park", "Desu Colony Janak Puri", "Janak Cinema", "Raghu Nagar (Janak Puri)", "Dabri Crossing Dwarka Road", "Dabri Village", "Dashrath Puri", "Vijay Enclave (New Dwarka Road)", "Mahaveer Enclave Part II and III", "SFS Flat Sec-2 Power House", "Dwarka Sec-1 Mahalaxmi Apartment", "Dwarka Sec-6 Telephone Exchange", "Dwarka Sec-6/7", "Princess Park", "Dwarka Sector-6/10-5/11 Xing", "Dwarka sec 4/5 Xing", "Dwarka Sec 13-3 Xing", "Dwarka Sec 13", "Dwarika sec-14 metro stn."],
+                "timings": "Every 15 Minutes"
+            }
+        ];
+
+        function searchRoute() {
+            const routeNumber = document.getElementById('routeNumber').value.trim();
+            const routeInfo = document.getElementById('routeInfo');
+            routeInfo.innerHTML = ''; // Clear previous results
+            if (routeNumber === '') {
+                routeInfo.innerHTML = '<p class="text-red-500">Please enter a route number.</p>';
+                return;
+            }
+
+            // Search for the route in the array
+            const routeData = routes.find(route => route.route_number === routeNumber);
+            if (routeData) {
+                routeInfo.innerHTML = `
+                    <div class="bg-white p-6 rounded-lg shadow-md">
+                        <h2 class="text-2xl font-bold text-gray-800 mb-4">Route Details for Route Number: ${routeData.route_number}</h2>
+                        <p><strong>Start Location:</strong> ${routeData.start_location}</p>
+                        <p><strong>End Location:</strong> ${routeData.end_location}</p>
+                        <p><strong>Timings:</strong> ${routeData.timings}</p>
+                        <h3 class="text-xl font-semibold text-gray-800 mt-4 mb-2">Stops:</h3>
+                        <table class="w-full table-auto border-collapse">
+                            <thead>
+                                <tr class="bg-gray-200">
+                                    <th class="border px-4 py-2">Stop Number</th>
+                                    <th class="border px-4 py-2">Stop Name</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                ${routeData.stops.map((stop, index) => `
+                                    <tr class="${index % 2 === 0 ? 'bg-gray-100' : 'bg-white'}">
+                                        <td class="border px-4 py-2">${index + 1}</td>
+                                        <td class="border px-4 py-2">${stop}</td>
+                                    </tr>
+                                `).join('')}
+                            </tbody>
+                        </table>
+                    </div>
+                `;
+            } else {
+                routeInfo.innerHTML = `<p class="text-red-500">No route found for number ${routeNumber}.</p>`;
+            }
+        }
+    </script>
+</body>
+
+</html>

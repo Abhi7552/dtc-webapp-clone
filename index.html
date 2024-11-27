@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bus Pass Application</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="path/to/font-awesome/css/all.min.css">
+</head>
+
+<body class="bg-gray-100 flex flex-col">
+    <!-- Header Part Starts here -->
+    <!-- Contact Information Section -->
+    <div class="bg-orange-500 flex items-center p-4">
+        <div class="mr-6 text-white">
+            <i class="fas fa-phone"></i>
+            <span>Phone: +1 123-456-7890</span>
+        </div>
+        <div class="text-white">
+            <i class="fas fa-envelope"></i>
+            <span>Email: info@example.com</span>
+        </div>
+    </div>
+
+    <!-- Main Logo and Heading -->
+    <div class="text-center my-3">
+        <!-- <img src="../images/DTC1.png" alt="Your Logo" class="max-w-xs mx-auto" height="80" width="80"> -->
+        <h1 class="text-4xl mt-4 text-blue-800">Welcome to DTC Bus Pass</h1>
+    </div>
+
+    <!-- Navigation Bar -->
+    <nav class="bg-gray-800">
+        <ul class="flex justify-center space-x-4 py-2">
+            <li><a href="./public/HTML/home.html" class="text-white hover:text-orange-500">Home</a></li>
+            <li><a href="#" class="text-white hover:text-orange-500">Apply for Bus Pass</a></li>
+            <li><a href="./public/HTML/priceCalculate.html" class="text-white hover:text-orange-500">Price
+                    Calculator</a></li>
+            <li><a href="./public/HTML/getTicket.html" class="text-white hover:text-orange-500">Get Bus Ticket</a></li>
+            <li><a href="./public/HTML/trackStatus.html" class="text-white hover:text-orange-500">Application Status</a>
+            </li>
+            <li><a href="./public/HTML/routeSearch.html" class="text-white hover:text-orange-500">Search Route</a></li>
+            <li><a href="./public/HTML/faq.html" class="text-white hover:text-orange-500">FAQs</a></li>
+            <li><a href="./public/HTML/contactPage.html" class="text-white hover:text-orange-500">Contact Us</a></li>
+        </ul>
+    </nav>
+
+    <!-- Application Form -->
+    <div class="max-w-lg mx-auto mt-8 p-6 bg-white shadow-md rounded-lg flex-grow w-4/5">
+        <h1 class="text-2xl font-semibold mb-4">Bus Pass Application</h1>
+        <form id="applicationStatusForm" method="post" class="max-w-lg mx-auto mt-8 bg-white p-6 rounded-lg shadow-md">
+            <label class="block mb-2">Are you already a bus pass user?</label>
+            <div class="mb-4">
+                <input type="radio" id="yes" name="existingUser" value="yes" class="mr-2"
+                    onclick="toggleBusPassNumber(true)">
+                <label for="yes" class="mr-4">Yes</label>
+                <input type="radio" id="no" name="existingUser" value="no" class="mr-2"
+                    onclick="toggleBusPassNumber(false)">
+                <label for="no">No</label>
+            </div>
+            <div id="busPassNumberDiv" class="mb-4 hidden">
+                <label for="busPassNumber" class="block mb-2">Enter your previous bus pass number:</label>
+                <input type="text" id="busPassNumber" name="busPassNumber"
+                    class="border border-gray-400 p-2 rounded w-full" placeholder="Bus Pass Number">
+            </div>
+            <label for="busPassType" class="block mb-2">Select the bus pass to apply:</label>
+            <select id="busPassType" name="busPassType" class="border border-gray-400 p-2 rounded w-full mb-4">
+                <option value="monthly">Monthly Pass</option>
+                <option value="quarterly">Quarterly Pass</option>
+                <option value="annual">Annual Pass</option>
+            </select>
+            <!-- <div class="text-center">
+                <input type="submit" value="Check Status"
+                    class="bg-orange-500 text-white font-bold py-2 px-4 rounded-lg hover:bg-orange-600 transition duration-300 cursor-pointer">
+            </div> -->
+            <div class="text-center">
+                <!-- <input type="submit" value="Check Status"
+                    class="bg-grey-500 font-bold py-2 px-4 rounded-lg hover:bg-orange-600 transition duration-300 cursor-pointer"> -->
+                <button type="submit"
+                    class="bg-blue-500 text-white font-bold py-2 px-4 rounded-lg w-full hover:bg-blue-600 transition duration-300">Submit</button>
+            </div>
+        </form>
+    </div>
+
+    <footer class="bg-gray-800 text-white text-center py-4 mt-6">
+        <p class="text-lg">© 2024 Your Bus Pass System. All rights reserved.</p>
+    </footer>
+
+    <script src="../JS/script.js"></script>
+    <script>
+        document.getElementById('applicationStatusForm').addEventListener('submit', function (e) {
+            e.preventDefault(); // Prevent the form from submitting traditionally
+            window.location.href = 'mainForm.html'; // Redirect to the success page
+        });
+    </script>
+    <script src="https://kit.fontawesome.com/a602ffd6c7.js" crossorigin="anonymous"></script>
+</body>
+
+</html>

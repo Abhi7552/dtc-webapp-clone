@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Track Your Application</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 font-sans">
+    <!-- Page Title -->
+    <h1 class="text-center text-3xl font-bold text-gray-800 mt-10">Track Your Application</h1>
+    
+    <!-- Application Status Form -->
+    <form id="applicationStatusForm" class="max-w-lg mx-auto mt-8 bg-white p-6 rounded-lg shadow-md">
+        <div class="mb-6">
+            <label for="applicationNumber" class="block text-lg font-semibold mb-2">Enter your application number:</label>
+            <input type="text" id="applicationNumber" name="applicationNumber" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:outline-none" required>
+        </div>
+        <div class="text-center">
+            <button type="button" onclick="trackApplication()" class="bg-orange-500 text-white font-bold py-2 px-4 rounded-lg hover:bg-orange-600 transition duration-300 cursor-pointer">Track Status</button>
+        </div>
+    </form>
+    
+    <!-- Status Message -->
+    <div id="statusMessage" class="max-w-lg mx-auto mt-6 text-center text-xl font-semibold text-gray-700"></div>
+
+    <script>
+        function trackApplication() {
+            const applicationNumber = document.getElementById("applicationNumber").value;
+            const statusMessage = document.getElementById("statusMessage");
+            
+            // Validate that application number is exactly 12 digits
+            if (applicationNumber.length === 12 && /^\d+$/.test(applicationNumber)) {
+                // Display the status message
+                statusMessage.textContent = "Your application is under review process at DTC Office. Please do wait for 2-3 working days, and we'll provide your bus pass as soon as possible. Thank you.";
+                statusMessage.classList.add("text-green-600");
+            } else {
+                // Display an error message if the application number is not valid
+                statusMessage.textContent = "Please enter a valid 12-digit application number.";
+                statusMessage.classList.add("text-red-600");
+            }
+        }
+    </script>
+</body>
+</html>

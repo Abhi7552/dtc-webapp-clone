@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bus Pass Application Form</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-gray-100 min-h-screen">
+    <h1 class="text-center text-3xl font-bold text-gray-700 my-8">Personal Details Form</h1>
+    <form id="personalDetailsForm" class="bg-white p-8 mx-auto shadow-lg rounded-lg max-w-4xl">
+
+        <!-- Personal Details Section -->
+        <fieldset class="border border-gray-300 rounded-lg p-6 mb-6">
+            <legend class="font-bold text-lg text-gray-700 mb-4">Personal Details</legend>
+
+            <div id="firstdivcontainer" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                    <label for="name" class="block font-semibold mb-1">Name:</label>
+                    <input type="text" id="name" name="name" required class="w-full p-2 border border-gray-300 rounded-lg">
+                </div>
+
+                <div>
+                    <label for="fathersName" class="block font-semibold mb-1">Father's Name:</label>
+                    <input type="text" id="fathersName" name="fathersName" required class="w-full p-2 border border-gray-300 rounded-lg">
+                </div>
+
+                <div>
+                    <label for="dob" class="block font-semibold mb-1">Date of Birth:</label>
+                    <input type="date" id="dob" name="dob" required class="w-full p-2 border border-gray-300 rounded-lg">
+                </div>
+
+                <div>
+                    <label for="age" class="block font-semibold mb-1">Age:</label>
+                    <input type="number" id="age" name="age" required class="w-full p-2 border border-gray-300 rounded-lg">
+                </div>
+
+                <div>
+                    <label for="gender" class="block font-semibold mb-1">Gender:</label>
+                    <select id="gender" name="gender" required class="w-full p-2 border border-gray-300 rounded-lg">
+                        <option value="">Select Gender</option>
+                        <option value="male">Male</option>
+                        <option value="female">Female</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label for="address" class="block font-semibold mb-1">Communication Address:</label>
+                    <textarea id="address" name="address" required class="w-full p-2 border border-gray-300 rounded-lg"></textarea>
+                </div>
+
+                <div>
+                    <label for="city" class="block font-semibold mb-1">City:</label>
+                    <input type="text" id="city" name="city" required class="w-full p-2 border border-gray-300 rounded-lg">
+                </div>
+
+                <div>
+                    <label for="pincode" class="block font-semibold mb-1">Pincode:</label>
+                    <input type="text" id="pincode" name="pincode" required class="w-full p-2 border border-gray-300 rounded-lg">
+                </div>
+
+                <div>
+                    <label for="region" class="block font-semibold mb-1">Select Region:</label>
+                    <select id="region" name="region" required class="w-full p-2 border border-gray-300 rounded-lg">
+                        <option value="delhi">Delhi</option>
+                        <option value="ncr">NCR</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label for="email" class="block font-semibold mb-1">Email Address:</label>
+                    <input type="email" id="email" name="email" required class="w-full p-2 border border-gray-300 rounded-lg">
+                </div>
+
+                <div>
+                    <label for="phone" class="block font-semibold mb-1">Phone Number:</label>
+                    <input type="tel" id="phone" name="phone" required class="w-full p-2 border border-gray-300 rounded-lg">
+                </div>
+            </div>
+        </fieldset>
+
+        <!-- Bus Pass Details Section -->
+        <fieldset class="border border-gray-300 rounded-lg p-6 mb-6">
+            <legend class="font-bold text-lg text-gray-700 mb-4">Bus Pass Details</legend>
+
+            <div id="secondDivContainer" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                    <label for="category" class="block font-semibold mb-1">Category of Bus Pass:</label>
+                    <input type="text" id="category" name="category" required class="w-full p-2 border border-gray-300 rounded-lg">
+                </div>
+
+                <div>
+                    <label for="busPassType" class="block font-semibold mb-1">Bus Pass Type:</label>
+                    <input type="text" id="busPassType" name="busPassType" required class="w-full p-2 border border-gray-300 rounded-lg">
+                </div>
+
+                <div>
+                    <label for="schoolCode" class="block font-semibold mb-1">School Code:</label>
+                    <input type="text" id="schoolCode" name="schoolCode" required class="w-full p-2 border border-gray-300 rounded-lg">
+                </div>
+
+                <div>
+                    <label for="schoolName" class="block font-semibold mb-1">School Name:</label>
+                    <input type="text" id="schoolName" name="schoolName" required class="w-full p-2 border border-gray-300 rounded-lg">
+                </div>
+
+                <div>
+                    <label for="class" class="block font-semibold mb-1">Class:</label>
+                    <input type="text" id="class" name="class" required class="w-full p-2 border border-gray-300 rounded-lg">
+                </div>
+
+                <div>
+                    <label for="rollNumber" class="block font-semibold mb-1">Roll Number:</label>
+                    <input type="text" id="rollNumber" name="rollNumber" required class="w-full p-2 border border-gray-300 rounded-lg">
+                </div>
+
+                <div>
+                    <label for="applicationForm" class="block font-semibold mb-1">Duly filled pass application form:</label>
+                    <input type="file" id="applicationForm" name="applicationForm" required class="w-full p-2 border border-gray-300 rounded-lg">
+                </div>
+
+                <div>
+                    <label for="feeReceipt" class="block font-semibold mb-1">Fee Receipt:</label>
+                    <input type="file" id="feeReceipt" name="feeReceipt" required class="w-full p-2 border border-gray-300 rounded-lg">
+                </div>
+
+                <div>
+                    <label for="fromDate" class="block font-semibold mb-1">From Date:</label>
+                    <input type="date" id="fromDate" name="fromDate" required class="w-full p-2 border border-gray-300 rounded-lg">
+                </div>
+
+                <div>
+                    <label for="numMonths" class="block font-semibold mb-1">Select Number of Months:</label>
+                    <input type="number" id="numMonths" name="numMonths" min="1" max="12" required class="w-full p-2 border border-gray-300 rounded-lg">
+                </div>
+
+                <div>
+                    <label for="toDate" class="block font-semibold mb-1">To Date:</label>
+                    <input type="date" id="toDate" name="toDate" required class="w-full p-2 border border-gray-300 rounded-lg">
+                </div>
+
+                <div>
+                    <label for="amount" class="block font-semibold mb-1">Amount:</label>
+                    <input type="number" id="amount" name="amount" required class="w-full p-2 border border-gray-300 rounded-lg">
+                </div>
+
+                <div>
+                    <label for="photo" class="block font-semibold mb-1">Choose Photograph:</label>
+                    <input type="file" id="photo" name="photo" required class="w-full p-2 border border-gray-300 rounded-lg">
+                </div>
+
+                <div>
+                    <label for="captcha" class="block font-semibold mb-1">Enter Captcha:</label>
+                    <input type="text" id="captcha" name="captcha" required class="w-full p-2 border border-gray-300 rounded-lg">
+                </div>
+            </div>
+        </fieldset>
+
+        <!-- Submit Button -->
+        <div class="text-center">
+            <input type="submit" value="Submit" class="bg-orange-500 text-white font-bold py-2 px-6 rounded-lg cursor-pointer hover:bg-orange-600">
+        </div>
+
+    </form>
+
+    <footer class="bg-gray-800 text-white text-center py-4 mt-8">
+        <p class="text-lg">© 2024 Your Bus Pass System. All rights reserved.</p>
+    </footer>
+    <script>
+        document.getElementById('personalDetailsForm').addEventListener('submit', function(e) {
+            e.preventDefault(); // Prevent the form from submitting traditionally
+            window.location.href = '../HTML/success.html'; // Redirect to the success page
+        });
+    </script>
+
+</body>
+
+</html>

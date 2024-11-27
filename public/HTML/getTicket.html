@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bus Ticket Booking</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/qrcodejs/qrcode.min.js"></script>
+</head>
+
+<body class="flex items-center justify-center min-h-screen bg-gray-100">
+    <div class="w-full max-w-md p-8 bg-white shadow-lg rounded-md">
+        <h2 class="text-2xl font-bold text-center text-gray-700 mb-6">Bus Ticket Booking</h2>
+        <form id="bookingForm" class="space-y-4">
+            <div>
+                <label class="block font-medium text-gray-600">Bus Route Number:</label>
+                <select id="routeNo"
+                    class="w-full p-2 border border-gray-300 rounded focus:outline-none focus:border-blue-400"
+                    onchange="loadStops()" required>
+                    <option value="">Select Route</option>
+                </select>
+            </div>
+            <div>
+                <label class="block font-medium text-gray-600">Start Stop:</label>
+                <select id="startStop"
+                    class="w-full p-2 border border-gray-300 rounded focus:outline-none focus:border-blue-400"
+                    required></select>
+            </div>
+            <div>
+                <label class="block font-medium text-gray-600">End Stop:</label>
+                <select id="endStop"
+                    class="w-full p-2 border border-gray-300 rounded focus:outline-none focus:border-blue-400"
+                    required></select>
+            </div>
+            <div id="priceDisplay" class="text-lg font-semibold text-blue-600 mb-4"></div>
+            <button type="button" onclick="generateTicket()"
+                class="w-full py-2 font-bold text-white bg-blue-500 rounded hover:bg-blue-600">Get Ticket</button>
+        </form>
+
+        <div id="ticketInfo" class="mt-6 hidden">
+            <h3 class="text-xl font-semibold text-gray-700">Ticket Information</h3>
+            <p id="ticketDetails" class="mt-2 text-gray-600"></p>
+            <div id="qrcode" class="mt-4"></div>
+        </div>
+    </div>
+
+    <script>
+        // Route data (sample)
+        let routesData = [
+            {
+                "route_number": "100",
+                "start_location": "Nehru Vihar Terminal",
+                "end_location": "Hari Nagar",
+                "stops": ["Nehru Vihar Terminal", "Nehru Vihar Xing", "Police Station Timarpur", "Balak Ram Hospital", "Timarpur", "Banarsi Daas Estate Timarpur", "Mall Road", "Vishwa Vidyalaya Metro Station", "INS Hostel", "Khalsa College", "Patel Chest", "Shri Ram College", "Maurice Nagar II", "Kamla Nagar/ Roop Nagar", "Shakti Nagar Nangia Park", "Chowki No 2", "Gulabi Bagh", "Shastri Nagar A Block", "Subhadra Colony", "Shastri Nagar Metro Station", "Shastri Nagar E Block", "Shastri Nagar Shiv Mandir", "Inderlok Metro Station", "Inderlok", "Zakhira", "DCM Chemical", "Swatantra Bharat Mills", "Campa Cola", "ESI Dispensary", "Moti Nagar", "Kirti Nagar", "F Block Kirti Nagar", "PS Kirti Nagar", "Fire Station Kirti Nagar", "Mayapuri Depot Crossing", "Government Press", "Metal Forging", "DDA Flats Hari Nagar", "Swarg Ashram", "Beriwala Bagh", "DDU Hospital", "Hari Nagar"],
+                "timings": "Every 15 Minutes"
+            },
+            {
+                "route_number": "761",
+                "start_location": "Manglapuri Terminal",
+                "end_location": "Azadpur Terminal",
+                "stops": ["Manglapuri Terminal", "Manglapuri X-ing", "Health Centre", "Dwarka Crossing", "Dwarka Sec-1", "MahaLakshmi Apartment", "SFS Flat Sec-2 Power House", "INS Hostel", "Khalsa College", "Patel Chest", "Shri Ram College", "Maurice Nagar II", "Kamla Nagar/ Roop Nagar", "Shakti Nagar Nangia Park", "Chowki No 2", "Gulabi Bagh", "Shastri Nagar A Block", "Subhadra Colony", "Shastri Nagar Metro Station", "Shastri Nagar E Block", "Shastri Nagar Shiv Mandir", "Inderlok Metro Station", "Inderlok", "Zakhira", "DCM Chemical", "Swatantra Bharat Mills", "Campa Cola", "ESI Dispensary", "Moti Nagar", "Kirti Nagar", "F Block Kirti Nagar", "PS Kirti Nagar", "Fire Station Kirti Nagar", "Mayapuri Depot Crossing", "Government Press", "Metal Forging", "DDA Flats Hari Nagar", "Swarg Ashram", "Beriwala Bagh", "DDU Hospital", "Azadpur Terminal"],
+                "timings": "Every 15 Minutes"
+            },
+            {
+                "route_number": "123",
+                "start_location": "Mori Gate Terminal",
+                "end_location": "Harewali",
+                "stops": ["Mori Gate Terminal", "Tees Hazari Court", "St Stephen Hospital", "PS Sabzi Mandi/ice Factory", "Qali Daak Khana", "Malka Ganj Terminal", "Hansraj College", "Banglow Road", "Maurice Nagar I", "Doulat Ram College", "Shri Ram College", "Patel Chest", "Khalse College", "GTB Nagar", "New Police Lines", "Alpana Cinema Model Town Mtr", "Model Town", "Model Town il", "Azadpur Terminal", "New Sabzi Mandi", "Adarsh Nagar/Bharola Village", "Saral Peepal Thala", "Mahindra Park", "Jahangir Puri GT Road", "Jahangir Puri Metro Station", "GTK Depot", "Haiderpur Metro Station", "Badli Crossing", "PS Badli", "Haider Pur Water Works", "Prashant Vihar F-Block", "Sai Apartment", "Anubhav Apartment", "Vidya Marg Crossing", "Alok Kunj", "Rohini Sec 15", "Maniav Chowk", "D2 Rohini Sec 15", "District Park Sec-16 Ronini", "Rohini Sec-16 Pocket-", "Rohini Sec 16", "Rohini Sec-16 Xing", "Delhi Engg College Shahbad", "Shahbad Daulatpur Gaon", "Shanbad Daulatpur School", "St Xavier School", "Shanbad Dairy Block A", "Shanbad Dairy", "Rohini Sec 27 and 30 Crossing", "Prehladpur Crossing", "Prehladpur Village", "Prehladpur School", "Jain Colony", "Rohini Sec 35", "Barwala School", "Barwala Village", "Poothkhurd Firni Road", "Sultan Pur Crossing", "Poothkhurd Village", "Maharishi Valmiki Hospital", "DSIDC Office Bawana", "Dhakewala Bawana", "Aditi College Bawana", "Bawana School", "Bawana Village", "Bawana Depot", "PS Bawana", "Dariyapur Kalan School Bawana", "Bajit Pur Crossing", "Dariyapur Gaon", "Harewall Crossing", "Harewall Gaon", "Harewall Border"],
+                "timings": "Every 15 Minutes"
+            },
+            {
+                "route_number": "234",
+                "start_location": "Karampura Terminal",
+                "end_location": "Harsh Vihar Terminal",
+                "stops": ["Karampura Terminal", "ESI Dispensary/CGHS Dispensary", "Campa Cola", "Swatantra Bharat Mills", "DCM Chemical", "DCM Chemical", "Zakhira", "Inderlok Metro Station", "Inderlok", "Shastri Nagar Shiv Mandir", "Shastri Nagar E Block", "Shastri Nagar Metro Station", "Subhadra Colony", "Shastri Nagar A Block", "Gulabi Bagh", "Chowki No 2", "Shakti Nagar Nangia Park", "Roop Nagar / Kamla Nagar", "Maurice Nagar II", "Doulat Ram College", "Shri Ram College", "Patel Chest", "Khalsa College", "INS Hostel", "Vishwa Vidyalaya Metro Station", "INMAS Hospital", "DDA Flats Lucknow Road", "CGHC Dispensary", "Education Office (Lucknow Rd)", "Timar Pur Orts", "Balak Ram Hospital", "Police Station Timarpur", "Nehru Vihar Crossing", "Wazirabad Crossing", "Gurudwara NanakSar", "Rajeev Nagar (Wazirabad Road)", "Khajuri", "Bhajanpura", "B-Block Yamuna Vihar", "Yamuna Vihar Brij Puri", "C 4 Yamuna Vihar", "BR Ambedkar College", "MIG Flates Loni Road", "Ashok Nagar/Meet Nagar", "Nand Nagari Depot", "Bank Colony", "Gagan Cinema Wazirabad Road", "Harsh Vihar Terminal"],
+                "timings": "Every 15 Minutes"
+            },
+            {
+                "route_number": "445",
+                "start_location": "DDA Flats KalkaJi",
+                "end_location": "New Delhi Railway Station Gate 2",
+                "stops": ["DDA Flats KalkaJi", "Tara Apartment", "Alaknanda Apartment", "Don Basco School", "gr-kailash part-2", "CR Park", "CR Park Market 1", "C R Park Market 2", "Desh Bandhu Apartments", "Desh Bandhu Gupta College", "South Park Appartments CR Park", "Nehru Place Apartment", "Nehru Place", "Sant Nagar", "Kailash Colony", "Lady Shri Ram College", "Central School (MCKR)", "MCKR Hospital", "Defence Colony", "Pant Nagar", "CGO Complex", "Amir Khusro Park / Oberoi Hotel", "Delhi Public School", "Sunder Nagar Market", "Sunder Nagar", "Zoo", "National Stadium", "ITPO Gate No. 3", "Pragati Maidan Gate No. 5", "Supreme Court Metro Station", "Tilak Bridge", "Mandi House", "Modern School", "Barakhamba Metro Station", "Statesman House", "Shivaji Park", "Vivekanand Marg / Minto Road", "PS Kamla Market", "New Delhi Railway Station Gate 2"],
+                "timings": "Every 15 Minutes"
+            },
+            {
+                "route_number": "511",
+                "start_location": "Dhaula Kuan",
+                "end_location": "Badarpur Border (T)",
+                "stops": ["Dhaula Kuan", "Satya Niketan", "Moti Bagh Gurudawara Nanakpura", "Moti Bagh", "South Moti Bagh", "Sangam Cinema", "RK Puram Sec-7", "RK Puram Sec-10", "Mohan Singh Market", "RK Puram Sec-12", "RK Puram Nab", "Munirka Village (T)", "Munirka DDA Flats", "JNU", "Ber Saral", "School Of Physical Science", "FAI", "Sanskrit Vidyapeeth", "Katwaria Sarai", "Qutab Hotel", "NCERT", "Adhchini Village", "Mothers International School", "IIT Gate", "Panchsheel Club / Sarvpriya Vihar", "Sadhna Enclave", "Swami Nagar", "Chirag Dilli", "Masjid Moth", "OS Communications", "Pumposh Enclave", "Nehru Place Crossing/Paras Cinema", "b block kalka ji", "Desh Bandhu Gupta College", "Govindpuri Extn Gali No. 16", "DDA Market Kalkaji", "DDA Flats KalkaJi", "Tara Apartment", "Guru Ravi Das Ashram", "Majeedia Hospital", "Hamdard Nagar / Sangam Vihar", "Air Force Station", "Tugikabad Fort", "Tughlaqabad Village", "Kaya Maya Hospital", "MB Road", "Prem Nagar", "Lal Kuan", "Surajkund Crossing", "Prehlad Pur", "Badarpur M B Road", "Jaltpur Crossing", "Badarpur Border (T)"],
+                "timings": "Every 15 Minutes"
+            },
+            {
+                "route_number": "764",
+                "start_location": "Najafgarh Terminal",
+                "end_location": "Nehru Place Terminal",
+                "stops": ["Najafgarh Terminal", "Jharoda Crossing Jharoda Road", "Najafgarh Nangioi Stand", "Health Centre", "NajafGarh Delhi Gate", "Tuda Mandi", "Power House NajafGarh", "Sai Baba Mandir (Nazafgarh)", "Nangli Sakrawati", "Nangli Sakrawati Crossing", "Arjun Park", "Nangli Dairy", "Kakrola Bridge", "Kakrola More", "Dwarka More Metro Station", "NSIT (Netaji Subhas Institute)", "Dwarka Sec 13/14", "Dwarka Sec 3/4", "DPS Matiyala", "Matiyala Xing", "Raja Puri", "Madhu Vihar", "Dwarka Sec 2-6", "JM International School", "Dwarka Sec 1", "Maharaja Agrasen Hospital Dwarka.", "Health Centre", "Mangla Puri Xing", "Mangla Puri Terminal", "Palam Colony Flyover", "Prehlad Pur", "Indian Oil Station", "Palam Airport/IGI Airport T1", "Palam More", "Raksha S Bhawa", "Shankar Vihar NH-8", "APS Colony/Arjun Path", "Subroto Park (Arjun Path)", "Singhnal Enclave", "Vasant Village", "Swami Malai Mandir", "RK Puram Sec-5", "Vasant Vihar Depot", "Munirka Family Planning", "Munirka DDA Flats", "ISTM", "IIT Hostel", "Jia Saral", "IIT Gate", "Panchsheel Club/Sarvpriya Vihar", "Sadhna Enclave", "Swami Nagar", "OS Communication / Masjid Moth", "OS Communications", "Pumposh Enclave", "Nehru Place Terminal"],
+                "timings": "Every 15 Minutes"
+            },
+            {
+                "route_number": "AIR-08",
+                "start_location": "IGI Airport Terminal 2",
+                "end_location": "NajafGarh Terminal",
+                "stops": ["IGI Airport Terminal 2 ", "Air Traffic Control Office", "Cargo/Express Terminal Gate", "Centaur Hotel", "AMPC", "Aero City Metro Station", "Police Colony Mehram Nagar", "Palam Airport/IGI Airport T111", "IOL", "Indian Oil Station", "Prehlad Pur", "Palam Colony Flyover", "Dwarka Flyover Palam Village", "Dwarka Crossing", "Dwarka Sec 1", "JM International School", "Dwarka Sec 2-6", "Madhu Vihar", "Rajapuri", "Matiyala Xing", "DPS Matiyala", "Dwarka Sec 3-4", "Dwarka Sec 13-3 Xing", "MRV School Sec 13 Dwarka", "Dwarka Sec 13", "NSIT (Netaji Subhas Institute)", "Suraj Vihar", "Kakrola More", "Kakrola Bridge", "Nangli Dairy", "Chhathh Ghat Park", "Arjun Park", "Nangli Sakrawati Crossing", "Nangli Sakrawati", "Sai Baba Mandir", "Power House NajafGarh", "Tuda Mandi", "NajafGarh Delhi Gate", "Police Station Najafgarh", "Najafgarh Dhansa More", "Jharoda Crossing Jharoda Road", "NajafGarh Terminal"],
+                "timings": "Every 15 Minutes"
+            },
+            {
+                "route_number": "RL-75",
+                "start_location": "New Delhi Railway Station Gate 2",
+                "end_location": "Dwarika sec-14 metro stn.",
+                "stops": ["New Delhi Railway Station Gate 2", "Shivaji Park", "Super Bazar", "Regal", "PS Parliament / Jantar Mantar", "Patel Chowk (Ashoka Road)", "Gurudwara Bangla Sahib", "NDPO", "Kendriya Terminal (Pt. Pant Marg)", "Kendriya Terminal (Church Road)", "North Avenue", "Dr. RML Hospital", "Talkatora Stadium Garden", "Sardar Patel Road Xing (11 Murti)", "Palika Kutumb", "Bhartiya Sadhu Samaj", "Railway Colony", "Bapu Dham", "Taj Hotel", "Dhaula Kuan", "RR Lines", "Garrison Engg.", "Brar Square", "Thimiyan Park", "Kirbi Place", "Supply Depot", "Janak Setu", "Nangal Raya Lajwanti Garden", "D Block Janak Puri", "SagarPur Vashisht park", "Desu Colony Janak Puri", "Janak Cinema", "Raghu Nagar (Janak Puri)", "Dabri Crossing Dwarka Road", "Dabri Village", "Dashrath Puri", "Vijay Enclave (New Dwarka Road)", "Mahaveer Enclave Part II and III", "SFS Flat Sec-2 Power House", "Dwarka Sec-1 Mahalaxmi Apartment", "Dwarka Sec-6 Telephone Exchange", "Dwarka Sec-6/7", "Princess Park", "Dwarka Sector-6/10-5/11 Xing", "Dwarka sec 4/5 Xing", "Dwarka Sec 13-3 Xing", "Dwarka Sec 13", "Dwarika sec-14 metro stn."],
+                "timings": "Every 15 Minutes"
+            }
+        ];
+
+        // Load route options
+        function loadRoutes() {
+            const routeSelect = document.getElementById('routeNo');
+            routesData.forEach(route => {
+                const option = document.createElement('option');
+                option.value = route.route_number;
+                option.textContent = `Route ${route.route_number} (${route.start_location} - ${route.end_location})`;
+                routeSelect.appendChild(option);
+            });
+        }
+
+        // Load stops based on selected route
+        function loadStops() {
+            const routeNumber = document.getElementById('routeNo').value;
+            const route = routesData.find(r => r.route_number === routeNumber);
+            if (route) {
+                const startSelect = document.getElementById('startStop');
+                const endSelect = document.getElementById('endStop');
+                startSelect.innerHTML = '<option value="">Select Start Stop</option>';
+                endSelect.innerHTML = '<option value="">Select End Stop</option>';
+                route.stops.forEach(stop => {
+                    const startOption = document.createElement('option');
+                    startOption.value = stop;
+                    startOption.textContent = stop;
+                    startSelect.appendChild(startOption);
+                    const endOption = document.createElement('option');
+                    endOption.value = stop;
+                    endOption.textContent = stop;
+                    endSelect.appendChild(endOption);
+                });
+            }
+        }
+
+        // Generate ticket and QR code
+        function generateTicket() {
+            const routeNumber = document.getElementById('routeNo').value;
+            const startStop = document.getElementById('startStop').value;
+            const endStop = document.getElementById('endStop').value;
+            const route = routesData.find(r => r.route_number === routeNumber);
+            const priceDisplay = document.getElementById('priceDisplay');
+            const ticketInfo = document.getElementById('ticketInfo');
+            const ticketDetails = document.getElementById('ticketDetails');
+            const qrcodeElement = document.getElementById('qrcode');
+            if (route && startStop && endStop) {
+                const startIndex = route.stops.indexOf(startStop);
+                const endIndex = route.stops.indexOf(endStop);
+                if (startIndex < endIndex) {
+                    const distance = endIndex - startIndex;
+                    const price = distance <= 5 ? 5 : distance <= 10 ? 10 : 15;
+                    const ticketNumber = 'TKT-' + Math.floor(100000 + Math.random() * 900000);
+                    const ticketData = `Ticket Number: ${ticketNumber}\nRoute: ${routeNumber}\nStart: ${startStop}\nEnd: ${endStop}\nPrice: ₹${price}`;
+                    priceDisplay.textContent = `Ticket Price: ₹${price}`;
+                    // Generate QR Code
+                    qrcodeElement.innerHTML = '';
+                    new QRCode(qrcodeElement, {
+                        text: ticketData,
+                        width: 128,
+                        height: 128
+                    });
+                    // Display Ticket Info
+                    ticketDetails.textContent = ticketData;
+                    ticketInfo.classList.remove('hidden');
+                } else {
+                    priceDisplay.textContent = "End stop must be after the start stop.";
+                }
+            } else {
+                priceDisplay.textContent = "Please complete all fields.";
+            }
+        }
+        // Load routes on page load
+        window.onload = loadRoutes;
+    </script>
+</body>
+
+</html>

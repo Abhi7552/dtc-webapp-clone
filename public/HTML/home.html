@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home - Bus Pass Application</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- JavaScript to handle registration, login, and logout functionality -->
+    <script src="../JS/script.js"></script>
+</head>
+
+<body class="font-sans bg-gray-100">
+    <!-- Header Section -->
+    <header class="flex justify-between items-center bg-gray-800 p-4 sticky top-0 z-50">
+        <div class="logo">
+            <!-- <img src="../images/DTC1.png" alt="Logo" class="max-w-xs" height="70" width="70"> -->
+            <!-- <img src="../images/e-buses-delhi.jpg" alt="Logo" class="max-w-xs" height="70" width="70"> -->
+            <!-- <img src="../images/e-buses-delhi.jpg" alt="Logo" class="max-w-xs" height="70" width="70"> -->
+        </div>
+        <nav>
+            <ul class="flex space-x-6 text-white">
+                <!-- <li><a href="home.html" class="hover:text-orange-500">Home</a></li> -->
+                <li><a href="loginPage.html" onclick="showLoginScreen()" class="hover:text-orange-500">Login</a></li>
+                <li><a href="registerPage.html" onclick="showRegisterScreen()"
+                        class="hover:text-orange-500">Register</a></li>
+                <li><a href="index.html" class="hover:text-orange-500">Apply for Bus Pass</a></li>
+                <li><a href="priceCalculate.html" class="hover:text-orange-500">Price Calculator</a></li>
+                <li><a href="trackStatus.html" class="hover:text-orange-500">Application Status</a></li>
+                <li><a href="getTicket.html" class="hover:text-orange-500">Get Bus Ticket</a></li>
+                <li><a href="routeSearch.html" class="text-white hover:text-orange-500">Search Route</a></li>
+                <li><a href="faq.html" class="hover:text-orange-500">FAQs</a></li>
+                <li><a href="contactPage.html" class="hover:text-orange-500">Contact Us</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Main Content Section -->
+    <main class="relative h-screen">
+        <div class="absolute inset-0 bg-cover bg-center" style="background-image: url('../images/e-buses-delhi.jpg');">
+            <div class="flex justify-center items-center h-full bg-black bg-opacity-50">
+                <div class="border-2 shadow-2xl text-center text-white p-6 rounded-lg bg-orange-400">
+                    <h1 class="text-4xl font-bold mb-4">Steps to Apply for a Bus Pass Online</h1>
+                    <ul class="list-disc font-semibold list-inside mb-4 my-3">
+                        <li>Step 1: Register an account</li>
+                        <li>Step 2: Fill out the application form</li>
+                        <li>Step 3: Upload required documents</li>
+                        <li>Step 4: Submit the application</li>
+                    </ul>
+                    <a href="./index.html"
+                        class="border-2 shadow-2xl font-bold bg-blue-600 text-white py-2 px-4 rounded hover:bg-orange-700">Apply
+                        Online</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Login Form -->
+        <div id="loginForm" class="hidden flex justify-center items-center h-full">
+            <div class="bg-white p-8 rounded-lg shadow-lg w-full max-w-sm">
+                <h2 class="text-2xl font-bold mb-6 text-center">Login</h2>
+                <form onsubmit="handleLogin(event)">
+                    <div class="mb-4">
+                        <label for="loginUsername" class="block text-lg font-semibold mb-2">Username</label>
+                        <input type="text" id="loginUsername" class="w-full p-3 border border-gray-300 rounded-lg"
+                            required>
+                    </div>
+                    <div class="mb-6">
+                        <label for="loginPassword" class="block text-lg font-semibold mb-2">Password</label>
+                        <input type="password" id="loginPassword" class="w-full p-3 border border-gray-300 rounded-lg"
+                            required>
+                    </div>
+                    <button type="submit"
+                        class="bg-blue-500 text-white font-bold py-2 px-4 rounded-lg w-full hover:bg-blue-600 transition duration-300">Login</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Register Form -->
+        <div id="registerForm" class="hidden flex justify-center items-center h-full">
+            <div class="bg-white p-8 rounded-lg shadow-lg w-full max-w-sm">
+                <h2 class="text-2xl font-bold mb-6 text-center">Register</h2>
+                <form onsubmit="handleRegister(event)">
+                    <div class="mb-4">
+                        <label for="registerUsername" class="block text-lg font-semibold mb-2">Username</label>
+                        <input type="text" id="registerUsername" class="w-full p-3 border border-gray-300 rounded-lg"
+                            required>
+                    </div>
+                    <div class="mb-6">
+                        <label for="registerPassword" class="block text-lg font-semibold mb-2">Password</label>
+                        <input type="password" id="registerPassword"
+                            class="w-full p-3 border border-gray-300 rounded-lg" required>
+                    </div>
+                    <button type="submit"
+                        class="bg-green-500 text-white font-bold py-2 px-4 rounded-lg w-full hover:bg-green-600 transition duration-300">Register</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Logout Screen -->
+        <div id="logoutScreen" class="hidden flex justify-center items-center h-full">
+            <div class="bg-white p-8 rounded-lg shadow-lg w-full max-w-sm">
+                <h2 class="text-2xl font-bold mb-6 text-center">Dashboard</h2>
+                <p id="welcomeMessage" class="text-lg text-center mb-6"></p>
+                <button onclick="handleLogout()"
+                    class="bg-red-500 text-white font-bold py-2 px-4 rounded-lg w-full hover:bg-red-600 transition duration-300">Logout</button>
+            </div>
+        </div>
+    </main>
+
+    <footer class="bg-gray-800 text-white text-center py-4">
+        <p class="text-lg">© 2024 Your Bus Pass System. All rights reserved.</p>
+    </footer>
+</body>
+</html>

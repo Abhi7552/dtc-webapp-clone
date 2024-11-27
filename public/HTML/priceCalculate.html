@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bus Pass Price Calculator</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100 font-sans flex flex-col min-h-screen">
+    <main class="flex-grow">
+        <h1 class="text-3xl font-bold text-center text-gray-800 my-6">Bus Pass Price Calculator</h1>
+        <form id="priceCalculatorForm" class="max-w-lg mx-auto p-6 bg-white rounded-lg shadow-md">
+            <!-- Pass Type -->
+            <label for="passType" class="font-semibold">Which type of pass do you want/have?</label>
+            <div class="mb-4">
+                <input type="radio" id="newPass" name="passType" value="new" class="mr-2">
+                <label for="newPass" class="mr-4">e-Pass</label>
+                <input type="radio" id="renewPass" name="passType" value="renew" class="mr-2">
+                <label for="renewPass">Conventional Pass</label>
+            </div>
+
+            <!-- Bus Pass Type -->
+            <label for="busPassType" class="font-semibold">Select the type of bus pass:</label>
+            <select id="busPassType" name="busPassType" class="w-full p-2 border border-gray-300 rounded mb-4">
+                <option value="routeA">New Delhi Railway Station to Dwarka Mor</option>
+                <option value="routeB">New Delhi Railway Station to Dabri</option>
+                <option value="routeC">New Delhi Railway Station to Palam</option>
+                <option value="routeD">New Delhi Railway Station to Uttam Nagar</option>
+                <option value="routeE">New Delhi Railway Station to Airport T-3</option>
+                <option value="routeF">IGI T-3 to Dwarka Sec-2</option>
+                <option value="routeG">Dabri to New Delhi Railway Station</option>
+                <option value="routeG">Palam to New Delhi Railway Station</option>
+                <option value="routeG">Tagore Garden to Dwarka Sec-2</option>
+                <option value="routeG">Dwarka Mor to Bawana</option>
+                <option value="routeG">Dabri to Badarpur Border</option>
+                <option value="routeG">Dabri to Gurugram</option>
+                <option value="routeG">Dabri to Chhatarpur</option>
+                <option value="routeG">Dabri to Faridabad</option>
+                <option value="routeG">Dabri to Botanical Garden</option>
+            </select>
+            <!-- Number of Months -->
+            <label for="numMonths" class="font-semibold">Select the number of months:</label>
+            <input type="number" id="numMonths" name="numMonths" min="1" max="12" step="1" class="w-full p-2 border border-gray-300 rounded mb-4">
+            <!-- Pin Code -->
+            <label for="pinCode" class="font-semibold">Enter your pin code:</label>
+            <input type="text" id="pinCode" name="pinCode" class="w-full p-2 border border-gray-300 rounded mb-4">
+            <!-- Calculate Button -->
+            <button type="button" onclick="calculatePrice()" class="w-full bg-yellow-500 text-blue-800 font-bold py-2 rounded hover:bg-orange-600 transition duration-300">Calculate</button>
+            <!-- Price Display -->
+            <p id="priceDisplay" class="text-xl font-semibold text-center text-gray-800 mt-4"></p>
+        </form>
+    </main>
+
+    <footer class="bg-gray-800 text-white text-center py-4 mt-6">
+        <p class="text-lg">© 2024 Your Bus Pass System. All rights reserved.</p>
+    </footer>
+
+    <script>
+        function calculatePrice() {
+            const passType = document.querySelector('input[name="passType"]:checked');
+            const numMonths = document.getElementById("numMonths").value;
+            const basePrice = 100;
+            let totalCost;
+
+            // Check if pass type and number of months are selected
+            if (!passType || !numMonths) {
+                alert("Please select a pass type and enter the number of months.");
+                return;
+            }
+
+            // Calculate base price
+            totalCost = basePrice * numMonths;
+
+            // Add additional cost for conventional pass
+            if (passType.value === "renew") {
+                totalCost += 15;
+            }
+
+            // Display the calculated price
+            document.getElementById("priceDisplay").textContent = `Total Price: ₹${totalCost}`;
+        }
+    </script>
+</body>
+</html>
